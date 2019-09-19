@@ -1,0 +1,18 @@
+Obter o conjunto total de amostras de treinamento (x = com as amostras e d = valores esperados)
+
+Inicializar o vetor W com valores aleatorios pequenos (normalmente 0 e 1)
+
+Especificar a taxa de aprendizado normalmente
+
+Inicializar o contador de épocas = 0
+
+Repetir:
+    erro = inexiste
+    para todas as amostras fazer:
+        u = wi * xi // calcular o potencial de ativação de cada 
+        y = g(u) // calcular a saida
+        se y != d[i]:   // se a saida for diferente da esperada
+            w = w + n(d[i] - y) * x
+            erro = existe
+        epoca += 1
+    enquanto erro = existe
