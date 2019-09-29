@@ -1,4 +1,4 @@
-import matplotlib as plt
+import matplotlib.pyplot as plt
 
 class MCP:
     def __init__(self, entradas, w, g):
@@ -32,6 +32,17 @@ class MCP:
             saidas.append(y)
             print("Saida: " + str(y))
         return saidas
+        
+    def execute_in_range(self, init, finish, num_result):
+        resultados = []
+        i = init
+        while i <= finish:
+            potencial = i*self.w[1] - self.entradas[0][0]
+            x = self.func(potencial)
+            resultados.append(x)
+            i += num_result
+        
+        return resultados
 
 def linear(potencial):
     return potencial
@@ -52,12 +63,11 @@ def logistica(potencial):
 def tan_hiper(potencial):
     return (1 - (2.72**((-1)*potencial)))/(1 + (2.72**((-1)*potencial)))
 
-
 ## PROGRAMA INICIA AQUI ##
 print("MCP Generico")
 
-n_amostras = int(input("Insira a quantidade de amostras\n"))
-n_entradas = int(input("Insira a quantidade de entradas de cada amostra\n"))
+n_amostras = 1
+n_entradas = 1
 entradas = []
 w = []
 
@@ -90,17 +100,8 @@ func = 0
 while func <1 or func>5:
     func = int(input())
 
-print("Neuronio configurado. Insira as entradas")
+print("Neuronio configurado.")
 
-for i in range(1, n_amostras+1):
-    lista = []
-    print("Amostra " + str(i))
-    for k in range(1, n_entradas+1):
-        lista.append(float(input("Insira o valor de X" + str(k))))
-    
-    entradas[i] = lista
-print(entradas)
-print(w)
 neuronio = MCP(entradas, w, None)
 
 if func == 1:
@@ -114,4 +115,19 @@ elif func == 4:
 elif func == 5:
     neuronio.setFunc(tan_hiper)
 
-saidas = neuronio.execute()
+
+init = -3
+finish = 3
+num_result = (abs(init) + finish)/50
+saidas = neuronio.execute_in_range(init, finish, num_result)
+
+p = init
+points = []
+z = 0
+while p <= finish:
+    points.append(p)
+    p += num_result
+
+plt.plot(points, saidas)
+plt.grid(True)
+plt.show()
