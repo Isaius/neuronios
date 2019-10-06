@@ -1,7 +1,8 @@
 # este programa treina uma rede neural perception simples
 # código feito por Isaius
 import random
-    
+from math import sqrt, pow
+
 def potencial(x1, x2, x3, w):
     # x1*w2 + x2*w2 + x3*w3- limiar
     return round((x1*w[1] + x2*w[2] + x3*w[3]) - w[0], 4)
@@ -15,6 +16,25 @@ def g(u):
 def recalibrar(w, tx, diff, x):
     for i in range(4):
         w[i] = round(w[i] + (tx*(diff)) * x[i], 4)
+
+def normalize(entrada):
+    media = 0
+    for i in entrada:
+        media += i
+    media = media/len(entrada)
+
+    variancia = 0
+    for i in entrada:
+        variancia += pow(i - media, 2)
+
+    variancia = variancia/len(entrada)
+    desv_padrao = sqrt(variancia)
+
+    normalizado = []
+    for i in entrada:
+        normalizado.append((i - media)/desv_padrao)
+    
+    return normalizado
 
 print("Treinamento de rede perceptron")
 
@@ -40,16 +60,18 @@ d = [-1.0000,-1.0000,-1.0000,1.0000,1.0000,-1.0000,1.0000,-1.0000
         ,1.0000,1.0000,1.0000,1.0000,-1.0000,1.0000,1.0000,1.0000
         ,1.0000,-1.0000,-1.0000,1.0000,-1.0000,1.0000]
 
+x1 = normalize(x1)
+x2 = normalize(x2)
+x3 = normalize(x3)
+
 w = []
 
-#w0
-w.append(round(random.uniform(0,1 ),4))
-#w1
-w.append(round(random.uniform(0,1 ),4))
-#w2
-w.append(round(random.uniform(0,1 ),4))
-#w3
-w.append(round(random.uniform(0,1 ),4))
+print("Informe os parâmetros livres (vetor w): ")
+w.append(float(input("Limiar inicial: ")))
+w.append(float(input("Peso w1 inicial: ")))
+w.append(float(input("Peso w2 inicial: ")))
+w.append(float(input("Peso w3 inicial: ")))
+
 print(w)
 tx_aprendizado = 0.01
 
